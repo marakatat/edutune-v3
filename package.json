@@ -68,7 +68,8 @@
     "framer-motion": "latest",
     "@supabase/ssr": "latest",
     "crypto": "latest",
-    "@vercel/analytics": "latest"
+    "@vercel/analytics": "latest",
+    "@vercel/speed-insights": "latest"
   },
   "devDependencies": {
     "@types/node": "^22",

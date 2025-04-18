@@ -7,13 +7,14 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Slider } from "@/components/ui/slider"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
-import { Plus, Minus, RefreshCw, Play, Pause, Grid, Move, MousePointer } from "lucide-react"
+import { Plus, Minus, RefreshCw, Play, Pause, Grid, Move, MousePointer, Trash } from "lucide-react"
 
 interface MathVisualizerProps {
   initialEquations?: string[]
+  initialGraphObjects?: any[]
 }
 
 type Point = {
@@ -28,9 +29,10 @@ type GraphObject = {
   color: string
   visible: boolean
   thickness: number
+  label?: string
 }
 
-export function MathVisualizer({ initialEquations = [] }: MathVisualizerProps) {
+export function MathVisualizer({ initialEquations = [], initialGraphObjects = [] }: MathVisualizerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [equations, setEquations] = useState<GraphObject[]>([])
   const [newEquation, setNewEquation] = useState("")
@@ -69,6 +71,18 @@ export function MathVisualizer({ initialEquations = [] }: MathVisualizerProps) {
       setEquations(initialGraphObjects)
     }
   }, [initialEquations, equations.length])
+
+  // Initialize with any provided graph objects from GeoGebra
+  useEffect(() => {
+    if (initialGraphObjects.length > 0) {
+      setEquations((prev) => {
+        // Filter out any objects that already exist (by id)
+        const existingIds = new Set(prev.map((obj) => obj.id))
+        const newObjects = initialGraphObjects.filter((obj) => !existingIds.has(obj.id))
+        return [...prev, ...newObjects]
+      })
+    }
+  }, [initialGraphObjects])
 
   // Canvas setup and drawing
   useEffect(() => {
@@ -244,6 +258,13 @@ export function MathVisualizer({ initialEquations = [] }: MathVisualizerProps) {
       }
 
       ctx.stroke()
+
+      // Draw label if present
+      if (graphObj.label) {
+        ctx.fillStyle = graphObj.color
+        ctx.font = "14px sans-serif"
+        ctx.fillText(graphObj.label, 10, 20)
+      }
     } catch (error) {
       console.error("Error drawing function:", error)
     }
@@ -306,6 +327,13 @@ export function MathVisualizer({ initialEquations = [] }: MathVisualizerProps) {
         ctx.beginPath()
         ctx.arc(x, y, 5, 0, Math.PI * 2)
         ctx.fill()
+
+        // Draw label if present
+        if (graphObj.label) {
+          ctx.fillStyle = graphObj.color
+          ctx.font = "14px sans-serif"
+          ctx.fillText(graphObj.label, x + 8, y - 8)
+        }
       } catch (error) {
         console.error("Error drawing animated point:", error)
       }
@@ -337,7 +365,7 @@ export function MathVisualizer({ initialEquations = [] }: MathVisualizerProps) {
       // Add label
       ctx.fillStyle = "white"
       ctx.font = "12px sans-serif"
-      ctx.fillText(`(${coords[0]}, ${coords[1]})`, x + 8, y - 8)
+      ctx.fillText(graphObj.label || `(${coords[0]}, ${coords[1]})`, x + 8, y - 8)
     } catch (error) {
       console.error("Error drawing point:", error)
     }
@@ -461,14 +489,38 @@ export function MathVisualizer({ initialEquations = [] }: MathVisualizerProps) {
     setShowGrid((prev) => !prev)
   }
 
+  const handleClearAll = () => {
+    if (equations.length === 0) return
+
+    if (confirm("Are you sure you want to clear all equations?")) {
+      setEquations([])
+      setSelectedEquation(null)
+      toast({
+        title: "Cleared",
+        description: "All equations have been removed from the visualizer",
+      })
+    }
+  }
+
   return (
     <div className="space-y-6">
       <Card className="border border-white/10 bg-black/60 backdrop-blur-md">
         <CardHeader>
-          <CardTitle className="text-2xl text-white">Interactive Math Visualizer</CardTitle>
-          <CardDescription className="text-gray-400">
-            Plot and explore mathematical functions and parametric equations
-          </CardDescription>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <CardTitle className="text-2xl text-white">Interactive Math Visualizer</CardTitle>
+              <p className="text-gray-400">Plot and explore mathematical functions and parametric equations</p>
+            </div>
+            <Button
+              variant="outline"
+              className="text-white border-white/20 hover:bg-white/10"
+              onClick={handleClearAll}
+              disabled={equations.length === 0}
+            >
+              <Trash className="h-4 w-4 mr-2" />
+              Clear All
+            </Button>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="relative">
@@ -596,6 +648,7 @@ export function MathVisualizer({ initialEquations = [] }: MathVisualizerProps) {
                             <div className="flex items-center">
                               <div className="w-3 h-3 rounded-full mr-2" style={{ backgroundColor: eq.color }}></div>
                               <span className={`text-sm ${eq.visible ? "text-white" : "text-gray-500 line-through"}`}>
+                                {eq.label ? eq.label + ": " : ""}
                                 {eq.equation.length > 20 ? eq.equation.substring(0, 20) + "..." : eq.equation}
                               </span>
                             </div>
