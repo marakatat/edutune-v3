@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label"
 import { Slider } from "@/components/ui/slider"
 import { Button } from "@/components/ui/button"
 import { Play, Pause, RefreshCw } from "lucide-react"
+import { useEvent } from "@/lib/hooks/use-event"
 
 interface EquationVisualizerProps {
   equations: string[]
@@ -174,28 +175,28 @@ export function EquationVisualizer({ equations }: EquationVisualizerProps) {
     return colors[index % colors.length]
   }
 
-  const handlePlayPause = () => {
+  const handlePlayPause = useEvent(() => {
     if (progress >= 1) {
       setProgress(0)
       setIsPlaying(true)
     } else {
       setIsPlaying(!isPlaying)
     }
-  }
+  })
 
-  const handleReset = () => {
+  const handleReset = useEvent(() => {
     setProgress(0)
     setIsPlaying(false)
-  }
+  })
 
-  const handleProgressChange = (value: number[]) => {
+  const handleProgressChange = useEvent((value: number[]) => {
     setProgress(value[0])
     setIsPlaying(false)
-  }
+  })
 
-  const handleScaleChange = (value: number[]) => {
+  const handleScaleChange = useEvent((value: number[]) => {
     setScale(value[0])
-  }
+  })
 
   return (
     <div className="space-y-6">

@@ -7,6 +7,15 @@ import { toast } from "@/components/ui/use-toast"
 export function NotificationHandler() {
   const searchParams = useSearchParams()
 
+  // If there's a useEffectEvent here, replace it with useEvent
+  // For example:
+  // const showToast = useEvent((message: string) => {
+  //   toast({
+  //     title: "Notification",
+  //     description: message,
+  //   })
+  // })
+
   useEffect(() => {
     // Check if there's a notAllowed parameter
     const notAllowed = searchParams.get("notAllowed")

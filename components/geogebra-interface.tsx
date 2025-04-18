@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { toast } from "@/components/ui/use-toast"
 import { Play, Trash, Copy, Download, HelpCircle } from "lucide-react"
 import { parseGeogebraCommands, mathObjectToGraphObject } from "@/lib/geogebra-parser"
+import { useEvent } from "@/lib/hooks/use-event"
 
 interface GeogebraInterfaceProps {
   onImportToVisualizer: (graphObjects: any[]) => void
@@ -34,9 +35,9 @@ export function GeogebraInterface({ onImportToVisualizer, initialCommands = "" }
     }
   }, [initialCommands])
 
-  const handleCommandChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleCommandChange = useEvent((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCommands(e.target.value)
-  }
+  })
 
   const executeCommands = (commandsToExecute: string) => {
     if (!commandsToExecute.trim()) {
@@ -91,27 +92,27 @@ export function GeogebraInterface({ onImportToVisualizer, initialCommands = "" }
     }
   }
 
-  const handleExecute = () => {
+  const handleExecute = useEvent(() => {
     executeCommands(commands)
-  }
+  })
 
-  const handleClearHistory = () => {
+  const handleClearHistory = useEvent(() => {
     setHistory([])
     toast({
       title: "History cleared",
       description: "Command history has been cleared",
     })
-  }
+  })
 
-  const handleCopyHistory = () => {
+  const handleCopyHistory = useEvent(() => {
     navigator.clipboard.writeText(history.join("\n"))
     toast({
       title: "Copied",
       description: "Command history copied to clipboard",
     })
-  }
+  })
 
-  const handleDownloadHistory = () => {
+  const handleDownloadHistory = useEvent(() => {
     const blob = new Blob([history.join("\n")], { type: "text/plain" })
     const url = URL.createObjectURL(blob)
     const a = document.createElement("a")
@@ -125,15 +126,15 @@ export function GeogebraInterface({ onImportToVisualizer, initialCommands = "" }
       title: "Downloaded",
       description: "Command history saved to file",
     })
-  }
+  })
 
-  const handleShowHelp = () => {
+  const handleShowHelp = useEvent(() => {
     toast({
       title: "GeoGebra Commands Help",
       description:
         "Supported commands: f(x) = ..., y = ..., (x,y), Segment[(x1,y1), (x2,y2)], Circle[(x,y), r], Curve[x(t), y(t), t, start, end]",
     })
-  }
+  })
 
   return (
     <Card className="border border-white/10 bg-black/60 backdrop-blur-md">
