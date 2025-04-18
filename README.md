@@ -1,4 +1,4 @@
-# Vizify
+# Romdev Website
 
 *Automatically synced with your [v0.dev](https://v0.dev) deployments*
 
@@ -14,13 +14,13 @@ Any changes you make to your deployed app will be automatically pushed to this r
 
 Your project is live at:
 
-**[https://vercel.com/sarpiliiis-projects/v0-vizify](https://vercel.com/sarpiliiis-projects/v0-vizify)**
+**[https://vercel.com/sarpiliiis-projects/v0-romdev](https://vercel.com/sarpiliiis-projects/v0-vizify)**
 
 ## Build your app
 
 Continue building your app on:
 
-**[https://v0.dev/chat/projects/RjE71l2oE2C](https://v0.dev/chat/projects/RjE71l2oE2C)**
+**[https://v0.dev/](https://v0.dev/chat/projects/RjE71l2oE2C)**
 
 ## How It Works
 
