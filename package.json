@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "vercel-build": "pnpm approve-builds && next build"
+    "vercel-build": "pnpm approve-builds --all && next build"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
