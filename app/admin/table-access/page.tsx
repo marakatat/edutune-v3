@@ -1,10 +1,10 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useAuth } from "@/contexts/auth-context"
-import Navbar from "@/components/navbar"
-import { SparklesCore } from "@/components/sparkles"
-import { toast } from "@/components/ui/use-toast"
+import { useAuth } from "@/src/contexts/auth-context"
+import Navbar from "@/src/components/navbar"
+import { SparklesCore } from "@/src/components/sparkles"
+import { toast } from "@/src/components/ui/use-toast"
 import { Loader2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 

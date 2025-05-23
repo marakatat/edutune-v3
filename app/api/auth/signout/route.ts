@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
-import { clearSessionCookie } from "@/lib/auth/session"
-import { createServerSupabaseClient } from "@/lib/supabase/server"
+import { clearSessionCookie } from "@/src/lib/auth/session"
+import { createServerSupabaseClient } from "@/src/lib/supabase/server"
 import { cookies } from "next/headers"
 
 export async function POST() {

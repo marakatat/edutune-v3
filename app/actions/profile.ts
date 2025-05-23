@@ -1,7 +1,7 @@
 "use server"
 
-import { createServerSupabaseClient } from "@/lib/supabase/server"
-import { getCurrentUser } from "@/lib/auth/session"
+import { createServerSupabaseClient } from "@/src/lib/supabase/server"
+import { getCurrentUser } from "@/src/lib/auth/session"
 import { revalidatePath } from "next/cache"
 
 export async function updateProfile(formData: FormData) {

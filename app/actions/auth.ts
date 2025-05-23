@@ -1,8 +1,8 @@
 "use server"
 
-import { createServerSupabaseClient } from "@/lib/supabase/server"
-import { generateSalt, hashPassword, verifyPassword } from "@/lib/auth/password"
-import { generateSessionToken, setSessionCookie, clearSessionCookie } from "@/lib/auth/session"
+import { createServerSupabaseClient } from "@/src/lib/supabase/server"
+import { generateSalt, hashPassword, verifyPassword } from "@/src/lib/auth/password"
+import { generateSessionToken, setSessionCookie, clearSessionCookie } from "@/src/lib/auth/session"
 import { redirect } from "next/navigation"
 import { cookies } from "next/headers"
 import { revalidatePath } from "next/cache"
